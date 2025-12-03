@@ -1,0 +1,5 @@
+{
+  "name": "UGT Certificados Pro",
+  "description": "Professional certificate generator for UGT Servicios Públicos with PDF export and CSV batch processing.",
+  "requestFramePermissions": []
+}
