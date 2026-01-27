@@ -2,11 +2,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import CertificatePreview from './components/CertificatePreview.tsx';
 import FormControls from './components/FormControls.tsx';
+import ManualBatchModal from './components/ManualBatchModal.tsx';
 import { CertificateData, INITIAL_DATA } from './types.ts';
 import { generatePDF } from './utils/pdfGenerator.ts';
-import { Users, ChevronRight, ChevronLeft, Layout, RefreshCcw } from 'lucide-react';
+import { Users, ChevronRight, ChevronLeft, Layout, ListPlus } from 'lucide-react';
 
-const APP_VERSION = "1.0.4";
+const APP_VERSION = "1.1.0";
 
 const App: React.FC = () => {
   const [currentData, setCurrentData] = useState<CertificateData>(INITIAL_DATA);
@@ -14,6 +15,7 @@ const App: React.FC = () => {
   const [currentBatchIndex, setCurrentBatchIndex] = useState<number>(-1);
   const [previewScale, setPreviewScale] = useState(0.6);
   const [activeSide, setActiveSide] = useState<'front' | 'back'>('front');
+  const [isManualBatchOpen, setIsManualBatchOpen] = useState(false);
   
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -47,6 +49,9 @@ const App: React.FC = () => {
     if (data.length > 0) {
         setCurrentBatchIndex(0);
         setCurrentData(data[0]);
+    } else {
+        setCurrentBatchIndex(-1);
+        setCurrentData(INITIAL_DATA);
     }
   };
 
@@ -74,6 +79,8 @@ const App: React.FC = () => {
             onChange={handleChange} 
             onGeneratePDF={downloadPDF} 
             onBatchUpload={handleBatchUpload}
+            onOpenManualBatch={() => setIsManualBatchOpen(true)}
+            isBatchActive={batchData.length > 0}
         />
       </div>
 
@@ -100,10 +107,10 @@ const App: React.FC = () => {
                 <div className="flex items-center gap-4">
                      <div className="flex items-center gap-2 text-ugt-dark font-medium text-sm">
                         <Users size={16} className="text-ugt-red" />
-                        <span>Modo Lotes: {batchData.length}</span>
+                        <span>Lote Activo: {batchData.length} alumnos</span>
                     </div>
                      <span className="text-sm text-gray-500 border-l pl-4">
-                        {currentBatchIndex + 1} / {batchData.length}
+                        Registro {currentBatchIndex + 1} de {batchData.length}
                      </span>
                      <div className="flex bg-gray-100 rounded-md p-1">
                         <button 
@@ -121,6 +128,12 @@ const App: React.FC = () => {
                             <ChevronRight size={20} />
                         </button>
                      </div>
+                     <button 
+                        onClick={() => handleBatchUpload([])}
+                        className="text-[10px] font-bold text-ugt-red uppercase hover:underline"
+                     >
+                         Salir del modo lote
+                     </button>
                 </div>
             )}
         </div>
@@ -144,11 +157,21 @@ const App: React.FC = () => {
                 Zoom: {Math.round(previewScale * 100)}%
             </div>
             <div className="text-[10px] text-gray-400 font-mono bg-white/50 px-2 py-1 rounded border border-gray-100">
-                v{APP_VERSION} build_stable
+                v{APP_VERSION} deployment_ready
             </div>
           </div>
         </div>
       </div>
+
+      {/* Modal for manual batch entry */}
+      {isManualBatchOpen && (
+        <ManualBatchModal 
+            isOpen={isManualBatchOpen}
+            onClose={() => setIsManualBatchOpen(false)}
+            onSave={handleBatchUpload}
+            currentDataTemplate={currentData}
+        />
+      )}
     </div>
   );
 };

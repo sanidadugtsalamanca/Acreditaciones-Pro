@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { CertificateData, ParticipationRole } from '../types.ts';
-import { Download, Printer, Upload, Image as ImageIcon, FileText, Sparkles, Loader2, QrCode, Star, Eye, EyeOff } from 'lucide-react';
+import { Download, Printer, Upload, Image as ImageIcon, FileText, Sparkles, Loader2, QrCode, Star, Eye, EyeOff, ListPlus } from 'lucide-react';
 import Papa from 'papaparse';
 import { GoogleGenAI } from "@google/genai";
 
@@ -10,6 +10,8 @@ interface FormControlsProps {
   onChange: (key: keyof CertificateData, value: any) => void;
   onGeneratePDF: () => void;
   onBatchUpload: (data: CertificateData[]) => void;
+  onOpenManualBatch: () => void;
+  isBatchActive: boolean;
 }
 
 const InputGroup = ({ label, id, type = "text", value, placeholder, className = "", onChange }: { 
@@ -36,7 +38,7 @@ const InputGroup = ({ label, id, type = "text", value, placeholder, className = 
   </div>
 );
 
-const FormControls: React.FC<FormControlsProps> = ({ data, onChange, onGeneratePDF, onBatchUpload }) => {
+const FormControls: React.FC<FormControlsProps> = ({ data, onChange, onGeneratePDF, onBatchUpload, onOpenManualBatch, isBatchActive }) => {
   const [isGenerating, setIsGenerating] = useState<string | null>(null);
 
   const generateWithAI = async (field: 'description' | 'detailedContent') => {
@@ -112,14 +114,24 @@ const FormControls: React.FC<FormControlsProps> = ({ data, onChange, onGenerateP
                 </button>
             </div>
         </div>
-        <div className="flex gap-2">
-            <button onClick={() => {}} className="flex-1 bg-white border border-gray-200 text-[10px] font-bold uppercase py-1.5 rounded flex items-center justify-center gap-1 hover:border-ugt-red transition-colors text-gray-500">
-                <FileText size={12} /> Plantilla
-            </button>
-            <label className="flex-1 cursor-pointer bg-white border border-gray-200 text-[10px] font-bold uppercase py-1.5 rounded flex items-center justify-center gap-1 hover:border-ugt-red transition-colors text-gray-500 text-center">
-                <Upload size={12} /> Cargar Lote
-                <input type="file" accept=".csv" className="hidden" onChange={handleCSVUpload} />
-            </label>
+        
+        <div className="space-y-2">
+            <div className="flex items-center justify-between px-1">
+                <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Gestión de Alumnos</span>
+                {isBatchActive && <span className="bg-green-100 text-green-700 text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase">Lote Activo</span>}
+            </div>
+            <div className="flex gap-2">
+                <button 
+                    onClick={onOpenManualBatch}
+                    className="flex-1 bg-ugt-red text-white text-[10px] font-bold uppercase py-1.5 rounded flex items-center justify-center gap-1.5 hover:bg-red-700 transition-colors shadow-sm"
+                >
+                    <ListPlus size={12} /> Entrada Manual
+                </button>
+                <label className="flex-1 cursor-pointer bg-white border border-gray-200 text-[10px] font-bold uppercase py-1.5 rounded flex items-center justify-center gap-1.5 hover:border-ugt-red transition-colors text-gray-500 text-center">
+                    <Upload size={12} /> Cargar CSV
+                    <input type="file" accept=".csv" className="hidden" onChange={handleCSVUpload} />
+                </label>
+            </div>
         </div>
       </div>
 
