@@ -4,7 +4,9 @@ import CertificatePreview from './components/CertificatePreview.tsx';
 import FormControls from './components/FormControls.tsx';
 import { CertificateData, INITIAL_DATA } from './types.ts';
 import { generatePDF } from './utils/pdfGenerator.ts';
-import { Users, ChevronRight, ChevronLeft, Layout } from 'lucide-react';
+import { Users, ChevronRight, ChevronLeft, Layout, RefreshCcw } from 'lucide-react';
+
+const APP_VERSION = "1.0.4";
 
 const App: React.FC = () => {
   const [currentData, setCurrentData] = useState<CertificateData>(INITIAL_DATA);
@@ -136,9 +138,14 @@ const App: React.FC = () => {
              <CertificatePreview data={currentData} scale={previewScale} activeSide={activeSide} />
           </div>
           
-          <div className="absolute bottom-6 right-6 bg-white/90 backdrop-blur px-4 py-2 rounded-full shadow border text-xs text-gray-500 font-mono flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-              Vista: {Math.round(previewScale * 100)}%
+          <div className="absolute bottom-6 right-6 flex flex-col items-end gap-2">
+            <div className="bg-white/90 backdrop-blur px-4 py-2 rounded-full shadow border text-xs text-gray-500 font-mono flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                Zoom: {Math.round(previewScale * 100)}%
+            </div>
+            <div className="text-[10px] text-gray-400 font-mono bg-white/50 px-2 py-1 rounded border border-gray-100">
+                v{APP_VERSION} build_stable
+            </div>
           </div>
         </div>
       </div>

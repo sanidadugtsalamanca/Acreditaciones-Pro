@@ -29,21 +29,12 @@
       }
     </script>
     <style>
-      #root { min-height: 100vh; }
-      .no-scrollbar::-webkit-scrollbar {
-        display: none;
-      }
-      .no-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-      }
+      #root { min-height: 100vh; display: flex; flex-direction: column; }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       @media print {
-        body * {
-          visibility: hidden;
-        }
-        #certificate-preview, #certificate-preview * {
-          visibility: visible;
-        }
+        body * { visibility: hidden; }
+        #certificate-preview, #certificate-preview * { visibility: visible; }
         #certificate-preview {
           position: absolute;
           left: 0;
@@ -73,6 +64,7 @@
 </head>
   <body class="bg-gray-50 text-slate-800">
     <div id="root"></div>
+    <!-- Script cargado como módulo para asegurar ejecución correcta de React -->
     <script type="module" src="index.tsx"></script>
   </body>
 </html>
