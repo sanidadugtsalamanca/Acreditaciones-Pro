@@ -15,24 +15,21 @@ const App: React.FC = () => {
   
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scale preview logic
   useEffect(() => {
     const handleResize = () => {
       if (containerRef.current) {
         const containerWidth = containerRef.current.clientWidth;
-        // 1123px is the fixed width of the certificate in Preview
         const newScale = Math.min(containerWidth / 1200, 1);
-        setPreviewScale(Math.max(newScale, 0.3)); // Minimum scale 0.3
+        setPreviewScale(Math.max(newScale, 0.3));
       }
     };
 
     window.addEventListener('resize', handleResize);
-    handleResize(); // Initial calculation
+    handleResize();
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const handleChange = (key: keyof CertificateData, value: any) => {
-    // If in batch mode, update the specific item in the batch array
     if (currentBatchIndex >= 0) {
         const updatedBatch = [...batchData];
         updatedBatch[currentBatchIndex] = { ...updatedBatch[currentBatchIndex], [key]: value };
@@ -67,8 +64,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen w-full overflow-hidden font-sans">
-      
+    <div className="flex h-screen w-full overflow-hidden font-sans bg-gray-50">
       {/* Sidebar Controls (Left) */}
       <div className="w-96 flex-shrink-0 border-r border-gray-200 shadow-lg z-20">
         <FormControls 
@@ -80,11 +76,9 @@ const App: React.FC = () => {
       </div>
 
       {/* Main Content Area (Right) */}
-      <div className="flex-1 flex flex-col bg-gray-100 relative">
-        
+      <div className="flex-1 flex flex-col relative">
         {/* Top Bar */}
-        <div className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between shadow-sm">
-            {/* View Toggle */}
+        <div className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between shadow-sm z-10">
             <div className="flex bg-gray-100 rounded-lg p-1">
                 <button
                     onClick={() => setActiveSide('front')}
@@ -100,7 +94,6 @@ const App: React.FC = () => {
                 </button>
             </div>
 
-            {/* Batch Navigation */}
             {batchData.length > 0 && (
                 <div className="flex items-center gap-4">
                      <div className="flex items-center gap-2 text-ugt-dark font-medium text-sm">
@@ -139,12 +132,13 @@ const App: React.FC = () => {
                 backgroundSize: '20px 20px'
             }}
         >
-          <div className="bg-white shadow-xl transition-all duration-300">
+          <div className="bg-white shadow-2xl transition-all duration-300">
              <CertificatePreview data={currentData} scale={previewScale} activeSide={activeSide} />
           </div>
           
-          <div className="absolute bottom-6 right-6 bg-white/90 backdrop-blur px-4 py-2 rounded-full shadow border text-xs text-gray-500 font-mono">
-              Vista previa: {Math.round(previewScale * 100)}%
+          <div className="absolute bottom-6 right-6 bg-white/90 backdrop-blur px-4 py-2 rounded-full shadow border text-xs text-gray-500 font-mono flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+              Vista: {Math.round(previewScale * 100)}%
           </div>
         </div>
       </div>

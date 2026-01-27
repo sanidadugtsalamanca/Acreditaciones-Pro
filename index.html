@@ -29,6 +29,7 @@
       }
     </script>
     <style>
+      #root { min-height: 100vh; }
       .no-scrollbar::-webkit-scrollbar {
         display: none;
       }
@@ -58,8 +59,9 @@
 {
   "imports": {
     "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
     "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react-dom": "https://aistudiocdn.com/react-dom@^19.2.0",
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
     "jspdf": "https://aistudiocdn.com/jspdf@^3.0.4",
     "html2canvas": "https://aistudiocdn.com/html2canvas@^1.4.1",
@@ -71,5 +73,6 @@
 </head>
   <body class="bg-gray-50 text-slate-800">
     <div id="root"></div>
+    <script type="module" src="index.tsx"></script>
   </body>
 </html>
