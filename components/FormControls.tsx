@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { CertificateData, ParticipationRole } from '../types';
-import { Download, Printer, Upload, Image as ImageIcon } from 'lucide-react';
+import { Download, Printer, Upload, Image as ImageIcon, FileText } from 'lucide-react';
 import Papa from 'papaparse';
 
 interface FormControlsProps {
@@ -10,7 +11,7 @@ interface FormControlsProps {
   onBatchUpload: (data: CertificateData[]) => void;
 }
 
-// --- Helper Components (Defined OUTSIDE to prevent focus loss) ---
+// --- Helper Components ---
 
 const InputGroup = ({ label, id, type = "text", value, placeholder, className = "", onChange }: { 
   label: string; 
@@ -94,15 +95,13 @@ const FormControls: React.FC<FormControlsProps> = ({ data, onChange, onGenerateP
         header: true,
         skipEmptyLines: true,
         complete: (results) => {
-          // Map CSV fields to CertificateData format loosely
           const mappedData: CertificateData[] = results.data.map((row: any, index: number) => ({
-             ...data, // Keep current defaults
-             id: `csv-${index}`,
+             ...data,
+             id: `csv-${index}-${Date.now()}`,
              studentName: row['Nombre'] || row['Alumno'] || data.studentName,
              studentDni: row['DNI'] || row['NIF'] || data.studentDni,
              uniqueCode: row['Codigo'] || row['ID'] || `CSV-${Date.now()}-${index}`,
              role: (row['Rol'] || data.role) as ParticipationRole,
-             // Allow overriding other fields if they exist in CSV
              courseName: row['Curso'] || data.courseName,
              hours: row['Horas'] || data.hours,
              department: row['Secretaria'] || row['Departamento'] || data.department,
@@ -110,9 +109,30 @@ const FormControls: React.FC<FormControlsProps> = ({ data, onChange, onGenerateP
              endDate: row['FechaFin'] || data.endDate,
           }));
           onBatchUpload(mappedData);
+          e.target.value = '';
         },
       });
     }
+  };
+
+  const downloadCSVTemplate = () => {
+    const headers = ["Nombre", "DNI", "Rol", "Curso", "Codigo", "Horas", "Secretaria", "FechaInicio", "FechaFin"];
+    const rows = [
+      ["Juan Pérez García", "12345678Z", "ALUMNO", "Prevención de Riesgos Laborales", "UGT-2024-001", "30 horas", "Sanidad Salamanca", "01/10/2024", "05/10/2024"],
+      ["Ana Belén López", "87654321X", "ALUMNO", "Prevención de Riesgos Laborales", "UGT-2024-002", "30 horas", "Sanidad Salamanca", "01/10/2024", "05/10/2024"],
+      ["Carlos Rodríguez", "11223344T", "DOCENTE", "Prevención de Riesgos Laborales", "UGT-2024-003", "30 horas", "Sanidad Salamanca", "01/10/2024", "05/10/2024"]
+    ];
+    
+    // Adding UTF-8 BOM (\uFEFF) ensures Excel opens it with correct encoding for accents/ñ
+    const csvContent = "\uFEFF" + [headers, ...rows].map(e => e.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "plantilla_ugt_certificados.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -137,8 +157,17 @@ const FormControls: React.FC<FormControlsProps> = ({ data, onChange, onGenerateP
                 Configuración
             </h2>
              <div className="flex gap-2">
-                 <label className="cursor-pointer bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 p-2 rounded-md transition-colors" title="Cargar CSV">
+                 <button 
+                    onClick={downloadCSVTemplate}
+                    className="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 p-2 rounded-md transition-colors flex items-center gap-1" 
+                    title="Descargar Plantilla CSV"
+                 >
+                    <FileText size={18} />
+                    <span className="text-xs font-bold hidden xl:inline">Plantilla</span>
+                 </button>
+                 <label className="cursor-pointer bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 p-2 rounded-md transition-colors flex items-center gap-1" title="Cargar CSV">
                     <Upload size={18} />
+                    <span className="text-xs font-bold hidden xl:inline">Subir</span>
                     <input type="file" accept=".csv" className="hidden" onChange={handleCSVUpload} />
                  </label>
                 <button 
@@ -153,7 +182,7 @@ const FormControls: React.FC<FormControlsProps> = ({ data, onChange, onGenerateP
                   className="bg-ugt-dark text-white hover:bg-gray-800 px-4 py-2 rounded-md shadow-sm flex items-center gap-2 transition-colors font-medium text-sm"
                 >
                   <Download size={18} />
-                  <span>Descargar PDF</span>
+                  <span>PDF</span>
                 </button>
             </div>
         </div>
