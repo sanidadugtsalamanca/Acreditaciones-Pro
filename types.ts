@@ -22,31 +22,37 @@ export interface CertificateData {
   authority2Name: string;
   authority2Role: string;
   uniqueCode: string;
-  showDigitalSignature: boolean; // New flag
-  isDateRange: boolean; // New flag
+  showDigitalSignature: boolean;
+  isDateRange: boolean;
+  qrCodeUrl: string;
+  isPremium: boolean;
+  showQrCode: boolean; // Nueva opción para desactivar el QR
 }
 
 export const INITIAL_DATA: CertificateData = {
   id: 'default',
-  logoUrl: '', // Dejamos vacío para que salga el placeholder o el usuario suba su archivo local
+  logoUrl: 'https://serviciospublicos.ugt.org/images/logo_ugtsp.png',
   title: 'DIPLOMA ACREDITATIVO',
-  department: 'Sanidad Salamanca',
+  department: 'Secretaría de Formación - Sanidad',
   studentName: 'Juan Pérez García',
   studentDni: '12.345.678-Z',
   role: 'ALUMNO',
-  courseName: 'Prevención de Riesgos Laborales en el Sector Público',
-  description: 'Por haber completado con éxito la acción formativa organizada por la Secretaría de Formación de UGT Servicios Públicos.',
-  contentKey: 'Módulo I: Marco Normativo. Módulo II: Riesgos Específicos. Módulo III: Primeros Auxilios.',
-  detailedContent: 'UNIDAD DIDÁCTICA 1: INTRODUCCIÓN\n1.1. Conceptos básicos sobre seguridad y salud\n1.2. Marco normativo básico\n\nUNIDAD DIDÁCTICA 2: RIESGOS GENERALES\n2.1. Riesgos ligados a las condiciones de seguridad\n2.2. Riesgos ligados al medio-ambiente de trabajo\n2.3. La carga de trabajo, la fatiga y la insatisfacción laboral\n\nUNIDAD DIDÁCTICA 3: GESTIÓN DE LA PREVENCIÓN\n3.1. Organismos públicos relacionados\n3.2. Organización del trabajo preventivo',
-  hours: '30 horas',
-  startDate: '01/03/2024',
-  endDate: '15/03/2024',
+  courseName: 'Estrategias de Negociación Colectiva en el Sector Público',
+  description: 'Por haber completado satisfactoriamente la acción formativa enfocada en la mejora de las condiciones laborales y defensa de los servicios públicos.',
+  contentKey: 'Módulo 1: Marco Normativo. Módulo 2: Técnicas de Negociación. Módulo 3: Acción Sindical.',
+  detailedContent: 'UNIDAD 1: ESTATUTO BÁSICO DEL EMPLEADO PÚBLICO\n1.1. Derechos y deberes\n1.2. Carrera profesional\n\nUNIDAD 2: NEGOCIACIÓN COLECTIVA\n2.1. Mesas generales y sectoriales\n2.2. Resolución de conflictos\n\nUNIDAD 3: SALUD LABORAL\n3.1. Prevención en centros públicos',
+  hours: '40 horas',
+  startDate: '01/05/2024',
+  endDate: '20/05/2024',
   location: 'Madrid',
-  authority1Name: 'María Rodríguez',
-  authority1Role: 'Secretaria de Formación',
-  authority2Name: 'Carlos Sánchez',
-  authority2Role: 'Secretario General',
-  uniqueCode: 'UGT-SP-2024-001',
+  authority1Name: 'Julio Lacuerda Castelló',
+  authority1Role: 'Secretario General UGT-SP',
+  authority2Name: 'Responsable de Formación',
+  authority2Role: 'Secretaría de Formación',
+  uniqueCode: 'UGT-SP-EXP-2024-88',
   showDigitalSignature: true,
   isDateRange: true,
+  qrCodeUrl: 'https://serviciospublicos.ugt.org/formacion/verificar',
+  isPremium: true,
+  showQrCode: true,
 };
