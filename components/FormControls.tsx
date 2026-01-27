@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { CertificateData, ParticipationRole } from '../types';
+import { CertificateData, ParticipationRole } from '../types.ts';
 import { Download, Printer, Upload, Image as ImageIcon, FileText, Sparkles, Loader2, QrCode, Star, Eye, EyeOff } from 'lucide-react';
 import Papa from 'papaparse';
 import { GoogleGenAI } from "@google/genai";

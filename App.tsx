@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect, useRef } from 'react';
-import CertificatePreview from './components/CertificatePreview';
-import FormControls from './components/FormControls';
-import { CertificateData, INITIAL_DATA } from './types';
-import { generatePDF } from './utils/pdfGenerator';
+import CertificatePreview from './components/CertificatePreview.tsx';
+import FormControls from './components/FormControls.tsx';
+import { CertificateData, INITIAL_DATA } from './types.ts';
+import { generatePDF } from './utils/pdfGenerator.ts';
 import { Users, ChevronRight, ChevronLeft, Layout } from 'lucide-react';
 
 const App: React.FC = () => {

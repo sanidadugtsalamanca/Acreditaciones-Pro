@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { CertificateData } from '../types';
+import { CertificateData } from '../types.ts';
 import { ShieldCheck } from 'lucide-react';
 
 interface CertificatePreviewProps {
@@ -39,7 +39,6 @@ const CertificatePreview: React.FC<CertificatePreviewProps> = ({ data, scale = 1
         <div className="absolute top-0 left-0 w-32 h-32 bg-ugt-red opacity-[0.03] rounded-br-full -translate-x-12 -translate-y-12"></div>
         <div className="absolute bottom-0 right-0 w-48 h-48 bg-ugt-red opacity-[0.05] rounded-tl-full translate-x-12 translate-y-12"></div>
 
-        {/* Changed padding from p-16 to px-16 py-10 for better vertical space */}
         <div className="absolute inset-0 px-16 py-10 flex flex-col items-center justify-between z-20">
           
           {/* Header */}
@@ -128,7 +127,7 @@ const CertificatePreview: React.FC<CertificatePreviewProps> = ({ data, scale = 1
               </div>
           </div>
 
-          {/* Footer Area - Optimized to avoid cutting */}
+          {/* Footer Area */}
           <div className="w-full grid grid-cols-3 gap-6 items-end pt-4 border-t border-gray-100">
               <div className="text-center flex flex-col items-center">
                   <div className="h-16 flex items-center justify-center mb-2">
@@ -186,7 +185,6 @@ const CertificatePreview: React.FC<CertificatePreviewProps> = ({ data, scale = 1
         </div>
       </div>
 
-      {/* BACK SIDE */}
       <div
         id="certificate-back"
         className={`bg-white shadow-2xl relative overflow-hidden mx-auto text-ugt-dark ${activeSide !== 'back' ? 'hidden' : 'block'}`}
