@@ -18,6 +18,10 @@ const CertificatePreview: React.FC<CertificatePreviewProps> = ({ data, scale = 1
     transform: `scale(${scale})`,
     transformOrigin: 'top center',
     fontFamily: "'Inter', sans-serif",
+    backgroundImage: data.backgroundUrl ? `url(${data.backgroundUrl})` : 'none',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
   };
 
   const premiumBorder = data.isPremium ? (
