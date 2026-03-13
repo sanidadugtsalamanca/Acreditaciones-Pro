@@ -26,12 +26,14 @@ export interface CertificateData {
   isDateRange: boolean;
   qrCodeUrl: string;
   isPremium: boolean;
-  showQrCode: boolean; // Nueva opción para desactivar el QR
+  showQrCode: boolean;
+  backgroundUrl?: string;
 }
 
 export const INITIAL_DATA: CertificateData = {
   id: 'default',
   logoUrl: 'https://serviciospublicos.ugt.org/images/logo_ugtsp.png',
+  backgroundUrl: 'https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=2000&auto=format&fit=crop', // Placeholder
   title: 'DIPLOMA ACREDITATIVO',
   department: 'Secretaría de Formación - Sanidad',
   studentName: 'Juan Pérez García',
