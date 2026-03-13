@@ -96,6 +96,15 @@ const FormControls: React.FC<FormControlsProps> = ({ data, onChange, onGenerateP
       }
   };
 
+  const handleBackgroundUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => onChange('backgroundUrl', reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="h-full flex flex-col bg-white overflow-hidden border-r border-gray-100 shadow-xl">
       <div className="p-5 bg-gradient-to-b from-gray-50 to-white border-b border-gray-100 sticky top-0 z-30">
@@ -155,6 +164,17 @@ const FormControls: React.FC<FormControlsProps> = ({ data, onChange, onGenerateP
                 </div>
                 <InputGroup id="department" label="Secretaría o Federación" value={data.department} onChange={onChange} />
                 
+                <div className="flex items-center gap-3 bg-gray-50 p-3 border border-gray-100 rounded">
+                    <label className="cursor-pointer bg-white w-12 h-12 flex-shrink-0 border-2 border-dashed border-gray-200 rounded-lg flex items-center justify-center text-gray-300 hover:text-ugt-red hover:border-ugt-red transition-all">
+                        <ImageIcon size={20} />
+                        <input type="file" accept="image/*" className="hidden" onChange={handleBackgroundUpload} />
+                    </label>
+                    <div className="flex-1">
+                        <p className="text-[10px] font-bold text-gray-400 uppercase mb-1">Imagen de Fondo</p>
+                        <input type="text" value={data.backgroundUrl || ''} onChange={(e) => onChange('backgroundUrl', e.target.value)} className="w-full text-xs text-gray-500 truncate bg-transparent outline-none" placeholder="O pega una URL..." />
+                    </div>
+                </div>
+
                 <div className="flex items-center gap-4 bg-yellow-50/50 p-2 rounded border border-yellow-100">
                   <button 
                     onClick={() => onChange('isPremium', !data.isPremium)}
